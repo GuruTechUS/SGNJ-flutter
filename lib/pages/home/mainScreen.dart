@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sgnj/pages/home/scheduleScreen.dart';
 import 'package:sgnj/style/themeColor.dart';
-//import 'package:sgnj/utils/spin_kit_ripple.dart';
 import 'package:sgnj/utils/tab_indication_painter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class HomePage extends StatefulWidget {
+
+class MainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _HomePageState();
+    return new _MainScreenState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainScreenState extends State<MainScreen> {
   /*
   bool _gender : {false(girl), true(body)}
   */
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Container(//SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height >= 775.0
@@ -247,6 +248,9 @@ class _HomePageState extends State<HomePage> {
               print(sportsItem);
               print(button);
               print(gender?'boys':'girls');
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ScheduleScreen(sportsItem, button, gender);
+              }));
             },
           )),
       Positioned(
