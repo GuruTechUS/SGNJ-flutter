@@ -13,21 +13,26 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  /*
-  bool _gender : {false(girl), true(body)}
-  */
+  
   bool _gender = false;
   Color left = Colors.black;
   Color right = Colors.white;
 
+  String userId = "";
+
   @override
   void initState() {
+    print("test");
     super.initState();
   }
 
+  
+    
+  
+
   @override
   Widget build(BuildContext context) {
-    return Container(//SingleChildScrollView(
+    return SingleChildScrollView(//SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height >= 775.0
@@ -47,17 +52,57 @@ class _MainScreenState extends State<MainScreen> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Padding(
-                  padding: EdgeInsets.only(top: 30.0),
+                  padding: EdgeInsets.only(top: 10.0),
                   child: _buildLogo(context)),
               Padding(
-                padding: EdgeInsets.only(top: 30.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: _buildMenuBar(context),
               ),
             ],
           ),
-          _buildCards(context)
+          Container(
+            child: _categoryList(context),
+          )
+          
         ]),
       ),
+    );
+  }
+
+  Widget _categoryList(BuildContext context) {
+    return Container(
+        child: Column(
+        children: <Widget>[
+          Container(
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: EdgeInsets.only(left: 35.0, top: 10.0),
+            child: Text(
+          "Girls",
+          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24.0,
+                            fontFamily: "WorkSansSemiBold"),
+          ),
+        ),
+        ),
+        _buildCards(context, false),
+         Container(
+          width: MediaQuery.of(context).size.width,
+          child:
+        Padding(
+          padding: EdgeInsets.only(left: 35.0, top: 10.0),
+          child: Text(
+          "Boys",
+          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24.0,
+                            fontFamily: "WorkSansSemiBold"),
+          ),
+        )),
+        _buildCards(context, true),
+      ],
+    ),
     );
   }
 
@@ -67,12 +112,12 @@ class _MainScreenState extends State<MainScreen> {
         Positioned(
           child: SpinKitRipple(
             color: Colors.white,
-            size: 120.0,
+            size: 100.0,
           ),
         ),
         Positioned(
-            left: 30.0,
-            top: 30.0,
+            left: 20.0,
+            top: 20.0,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(30.0),
                 child: Container(
@@ -156,7 +201,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Widget _buildCards(BuildContext context) {
+  Widget _buildCards(BuildContext context, bool gender) {
     final sportsList = [
       {"name": "soccer", "title": "Soccer"},
       {"name": "basketball", "title": "Basket Ball"},
@@ -165,7 +210,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
     return Container(
         child: Padding(
-            padding: EdgeInsets.only(left: 0.0, top: 20.0),
+            padding: EdgeInsets.only(left: 0.0, top: 10.0),
             child: SizedBox(
               height: 220.0,
               child: ListView.builder(
@@ -174,15 +219,16 @@ class _MainScreenState extends State<MainScreen> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return _buildSportCard(
-                      context, index, sportsList[index], this._gender);
+                      context, index, sportsList[index], gender);
                 },
               ),
-            )));
+            ))
+      );
   }
 
   Widget _buildSportCard(
       BuildContext context, int index, dynamic sportsItem, bool gender) {
-    final buttonList = [
+    final categoryList = [
       {"name": "u10", "desc": "Under 10"},
       {"name": "u14", "desc": "Under 14"},
       {"name": "u18", "desc": "Under 18"},
@@ -200,7 +246,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: Text(
                     sportsItem["title"],
                     style: TextStyle(
-                        color: this._gender ? Colors.blue : Colors.pink,
+                        color: gender ? Colors.blue : Colors.pink,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                         fontFamily: "WorkSansSemiBold"),
@@ -209,12 +255,12 @@ class _MainScreenState extends State<MainScreen> {
                 width: 180.0,
                 height: 180.0,
                 child: GridView.builder(
-                    itemCount: buttonList.length,
+                    itemCount: categoryList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2),
                     itemBuilder: (BuildContext context, int index) {
                       return _categoryItem(
-                          context, index, sportsItem, buttonList[index], this._gender);
+                          context, index, sportsItem, categoryList[index], gender);
                     }),
               )
               /**/
@@ -248,6 +294,7 @@ class _MainScreenState extends State<MainScreen> {
               print(sportsItem);
               print(button);
               print(gender?'boys':'girls');
+              print("test");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return ScheduleScreen(sportsItem, button, gender);
               }));
